@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin panel</title>
+    <link rel="shortcut icon" type="image/png"
+          href="https://avatars.mds.yandex.net/i?id=bc97ef2f6266bf31f3060082b2ab57cf-7000993-images-thumbs&n=13&exp=1">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .st1 {
+            height: 100vh;
+            background-color: #f6f9f3;
+        }
+
+        .st2 {
+            margin-left: -1rem;
+            margin-right: -1rem;
+        }
+
+        .st3 {
+            height: 72vh;
+            background-color: white;
+        }
+    </style>
+</head><!--<ссылки и стили>-->
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-11 p-2 bg-dark text-white">
+            <t class="font-weight-bold ml-2" th:text="${admin.getEmail()}">admin@mail.ru</t>
+            <t class="font-weight-normal">with roles:</t>
+            <t th:text="${role}">ADMIN</t>
+        </div>
+        <form class="col-1 p-2 bg-dark text-right" th:method="POST" th:action="@{/logout}">
+            <button class="btn btn-dark text-white-50 btn-sm mr-1" type="submit">Logout</button>
+        </form>
+    </div>
+</div><!--<черная полоса с кнопкой>-->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2">
+            <p></p>
+            <div class="nav flex-column nav-pills st2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
+                   role="tab" aria-controls="v-pills-home" aria-selected="true">Admin</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+                   role="tab" aria-controls="v-pills-profile" aria-selected="false">User</a>
+            </div>
+        </div><!--боковые вкладки user и admin-->
+
+        <div class="col-10 st1">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                     aria-labelledby="v-pills-home-tab">
+                    <p></p>
+                    <h1 style="margin-left: 15px">Admin panel</h1>
+                    <nav>
+                        <div class="nav nav-tabs ml-1" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
+                               role="tab"
+                               aria-controls="nav-home" aria-selected="true">Users table</a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
+                               role="tab"
+                               aria-controls="nav-profile" aria-selected="false">New User</a>
+                        </div>
+                    </nav>
+
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                             aria-labelledby="nav-home-tab">
+                            <h5 class="col-12 p-2 mb-0 border ml-1">All users</h5>
+                            <div class="border col-12 bg-white ml-1">
+                                <table class="table table-striped">
+                                    <p></p>
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Age</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <div th:each="ur : ${user_role}">
+                                        <tr>
+                                            <td th:text="${ur.getKey().getId()}">ID</td>
+                                            <td th:text="${ur.getKey().getFirstName()}">First Name</td>
+                                            <td th:text="${ur.getKey().getLastName()}">Last Name</td>
+                                            <td th:text="${ur.getKey().getAge()}">Age</td>
+                                            <td th:text="${ur.getKey().getEmail()}">Email</td>
+                                            <td th:text="${ur.getValue()}">Role</td>
+
+                                            <td><a th:href="@{/user/userFor/(id=${ur.getKey().getId()})}"
+                                                class="btn btn-info btn-sm editBtn">Edit</a></td>
+
+                                            <td><a th:href="@{/user/userFor/(id=${ur.getKey().getId()})}"
+                                                   class="btn btn-danger btn-sm deleteBtn">Delete</a></td>
+                                        </tr>
+                                    </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <h5 class="col-12 p-2 mb-0 ml-1 border">Add new user</h5>
+                            <div class="col-12 st3 ml-1 border">
+                                <div class="container-fluid" style="width: 30%">
+                                    <br>
+                                    <form th:method="POST" th:action="@{/admin/new}" th:object="${user}">
+                                        <div class="text-center">
+                                            <label for="firstname" class="font-weight-bold  mb-0">First name</label>
+                                            <input type="text" id="firstname" name="firstName" class="form-control"
+                                                   placeholder="First name" required autofocus>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <label for="lastname" class="font-weight-bold  mb-0">Last name</label>
+                                            <input type="text" id="lastname" name="lastName" class="form-control"
+                                                   placeholder="Last name" required>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <label for="age" class="font-weight-bold  mb-0">Age</label>
+                                            <input type="number" step="1" id="age" name="age" class="form-control"
+                                                   placeholder="Age" required>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <label for="email" class="font-weight-bold mb-0">Email</label>
+                                            <input type="email" id="email" name="email" class="form-control"
+                                                   placeholder="Email address" required>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <label for="password" class="font-weight-bold  mb-0">Password</label>
+                                            <input type="password" id="password" name="password" class="form-control"
+                                                   placeholder="Password" required>
+                                        </div>
+                                        <div class="form-group text-center mt-3">
+                                            <label for="role" class="font-weight-bold  mb-0">Role</label>
+                                            <select multiple class="form-control" name="role" id="role"
+                                                    style="height: 50px;">
+                                                <option>ADMIN</option>
+                                                <option>USER</option>
+                                                <option>ADMIN USER</option>
+                                            </select>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <button class="btn btn-success" type="submit">Add new user</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div><!--<создание нового юзера>-->
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    <p></p>
+                    <h1 style="margin-left: 20px">User information-page</h1>
+                    <h5 class="col-12 p-2 mb-0 border border-bottom-0 ml-1">About user</h5>
+                    <div class="border col-12 bg-white ml-1">
+                        <table class="table table-striped">
+                            <p></p>
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Age</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td th:text="${admin.getId()}">ID</td>
+                                <td th:text="${admin.getFirstName()}">First Name</td>
+                                <td th:text="${admin.getLastName()}">Last Name</td>
+                                <td th:text="${admin.getAge()}">Age</td>
+                                <td th:text="${admin.getEmail()}">Email</td>
+                                <td th:text="${role}">Role</td>
+                            <tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div><!--<инфо по юзеру из админа>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal Edit-->
+<div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Edit user</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form th:method="PUT" th:action="@{admin/edit}">
+                <div class="container-fluid w-50">
+
+                    <div class="text-center mt-3">
+                        <label for="id1" class="font-weight-bold mb-0">ID</label>
+                        <input type="text" id="id1" name="id" class="form-control"
+                               placeholder="ID" readonly>
+                    </div>
+                    <div class="text-center mt-3">
+                        <label for="firstname" class="font-weight-bold mb-0">First name</label>
+                        <input type="text" id="firstname1" name="firstName" class="form-control"
+                               placeholder="First name" required autofocus>
+                    </div>
+                    <div class="text-center mt-3">
+                        <label for="lastname" class="font-weight-bold mb-0">Last name</label>
+                        <input type="text" id="lastname1" name="lastName" class="form-control"
+                               placeholder="Last name" required>
+                    </div>
+                    <div class="text-center mt-3">
+                        <label for="age" class="font-weight-bold  mb-0">Age</label>
+                        <input type="number" step="1" id="age1" name="age" class="form-control"
+                               placeholder="Age" required>
+                    </div>
+                    <div class="text-center mt-3">
+                        <label for="email" class="font-weight-bold mb-0">Email</label>
+                        <input type="email" id="email1" name="email" class="form-control"
+                               placeholder="Email address" required>
+                    </div>
+                    <div class="text-center mt-3">
+                        <label for="password" class="font-weight-bold mb-0">Password</label>
+                        <input type="password" id="password1" name="password" class="form-control">
+                    </div>
+                    <div class="form-group text-center mt-3 ">
+                        <label for="role" class="font-weight-bold mb-0">Role</label>
+                        <select multiple class="form-control" name="role" id="role1"
+                                style="height: 50px;">
+                            <option>ADMIN</option>
+                            <option>USER</option>
+                            <option>ADMIN USER</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info btn-sm">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div><!--<модальное окно с редактированием юзера>-->
+<!-- Modal Delete-->
+<div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">Delete user</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&#215;</span>
+                </button>
+            </div>
+
+            <form th:method="DELETE" th:action="@{/admin/delete}">
+                <div class="container-fluid" style="width: 50%">
+                    <div class="text-center mt-3">
+                        <label for="id2" class="font-weight-bold mb-0">ID</label>
+                        <input type="text" id="id2" name="id" class="form-control"
+                               placeholder="ID" readonly>
+                    </div>
+                    <div class="text-center mt-3">
+                        <label for="firstname" class="font-weight-bold mb-0">First name</label>
+                        <input type="text" id="firstname2" name="firstName" class="form-control"
+                               placeholder="First name" readonly>
+                    </div>
+                    <div class="text-center mt-3">
+                        <label for="lastname" class="font-weight-bold mb-0">Last name</label>
+                        <input type="text" id="lastname2" name="lastName" class="form-control"
+                               placeholder="Last name" readonly>
+                    </div>
+                    <div class="text-center mt-3">
+                        <label for="age" class="font-weight-bold mb-0">Age</label>
+                        <input type="text" id="age2" name="age" class="form-control"
+                               placeholder="Age" readonly>
+                    </div>
+                    <div class="text-center mt-3">
+                        <label for="email" class="font-weight-bold mb-0">Email</label>
+                        <input type="email" id="email2" name="email" class="form-control"
+                               placeholder="Email address" readonly>
+                    </div>
+                    <div class="form-group text-center mt-3">
+                        <label for="role" class="font-weight-bold mb-0">Role</label>
+                        <select multiple class="form-control" name="role" id="role2"
+                                style="height: 50px;" disabled="disabled">
+                            <option>ADMIN</option>
+                            <option>USER</option>
+                            <option>ADMIN USER</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div><!--<модальное окно с удалением юзера>-->
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        $('.editBtn').on('click', function (event) {
+            event.preventDefault();
+            $.get($(this).attr('href'), function (user) {
+                $('#id1').val(user.id);
+                $('#firstname1').val(user.firstName);
+                $('#lastname1').val(user.lastName);
+                $('#age1').val(user.age);
+                $('#email1').val(user.email);
+            });
+            $('#editUser').modal();
+        });
+
+        $('.deleteBtn').on('click', function (event) {
+            event.preventDefault();
+            $.get($(this).attr('href'), function (user) {
+                $('#id2').val(user.id);
+                $('#firstname2').val(user.firstName);
+                $('#lastname2').val(user.lastName);
+                $('#age2').val(user.age);
+                $('#email2').val(user.email);
+            });
+            $('#deleteUser').modal();
+        });
+    });
+</script>
+</body>
+</html>
+

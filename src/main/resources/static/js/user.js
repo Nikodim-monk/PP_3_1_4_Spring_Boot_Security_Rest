@@ -4,7 +4,7 @@
 
 document.getElementById("head").innerHTML =
     "<tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Age</th><th>Email</th><th>Role</th>"
-let url = "http://localhost:8080/user/" + 6
+let url = "http://localhost:8080/user/" + document.getElementById("id").textContent
 fetch(url).then(rez => {
     rez.json().then(data => {
         let temp = "<tr>";

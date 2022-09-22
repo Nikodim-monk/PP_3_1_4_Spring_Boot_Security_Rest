@@ -4,7 +4,6 @@
     <title>User panel</title>
     <link rel="shortcut icon" type="image/png"
           href="https://avatars.mds.yandex.net/i?id=bc97ef2f6266bf31f3060082b2ab57cf-7000993-images-thumbs&n=13&exp=1">
-    <link rel="import" href="../intro.html">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -41,6 +40,7 @@
         <div class="col-11 p-2 bg-dark text-white">
             <t class="font-weight-bold ml-2" id="email">user@mail.ru</t>
             <t class="font-weight-normal">with roles: USER</t>
+            <t class="d-none" th:text="${id}" id="id"></t>
         </div>
         <form class="col-1 p-2 bg-dark text-right" th:method="POST" th:action="@{/logout}">
             <button class="btn btn-dark text-white-50 btn-sm mr-1" type="submit">Logout</button>

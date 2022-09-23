@@ -20,9 +20,8 @@ public class UserController {
 
     @GetMapping()
     public String printUser(Principal principal, ModelMap model) {
-        long id = service.getByEmail(principal.getName()).getId();
-//        User user = service.getByEmail("vas@mail.ru");
-        model.addAttribute("id", id);
+        model.addAttribute("id", service.getByEmail(principal.getName()).getId());
+//        model.addAttribute("id", service.getByEmail("joh@mail.ru").getId());
         return "user_panel";
     }
 

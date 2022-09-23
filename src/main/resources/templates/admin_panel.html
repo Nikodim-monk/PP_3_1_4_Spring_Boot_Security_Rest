@@ -32,9 +32,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-11 p-2 bg-dark text-white">
-            <t class="font-weight-bold ml-2" th:text="${admin.getEmail()}">admin@mail.ru</t>
-            <t class="font-weight-normal">with roles:</t>
-            <t th:text="${role}">ADMIN</t>
+            <t class="font-weight-bold ml-2" id="email">user@mail.ru</t>
+            <t class="font-weight-normal" id="role">with roles: ADMIN</t>
+            <t class="d-none" th:text="${id}" id="id"></t>
         </div>
         <form class="col-1 p-2 bg-dark text-right" th:method="POST" th:action="@{/logout}">
             <button class="btn btn-dark text-white-50 btn-sm mr-1" type="submit">Logout</button>
@@ -78,36 +78,27 @@
                             <div class="border col-12 bg-white ml-1">
                                 <table class="table table-striped">
                                     <p></p>
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Age</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <div th:each="ur : ${user_role}">
-                                        <tr>
-                                            <td th:text="${ur.getKey().getId()}">ID</td>
-                                            <td th:text="${ur.getKey().getFirstName()}">First Name</td>
-                                            <td th:text="${ur.getKey().getLastName()}">Last Name</td>
-                                            <td th:text="${ur.getKey().getAge()}">Age</td>
-                                            <td th:text="${ur.getKey().getEmail()}">Email</td>
-                                            <td th:text="${ur.getValue()}">Role</td>
+                                    <thead id="headAll"></thead>
+                                    <tbody id="dataAll">
+<!--                                    <div th:each="ur : ${user_role}">-->
+<!--                                        <tr >-->
+<!--                                            <td th:text="${ur.getKey().getId()}">ID</td>-->
+<!--                                            <td th:text="${ur.getKey().getFirstName()}">First Name</td>-->
+<!--                                            <td th:text="${ur.getKey().getLastName()}">Last Name</td>-->
+<!--                                            <td th:text="${ur.getKey().getAge()}">Age</td>-->
+<!--                                            <td th:text="${ur.getKey().getEmail()}">Email</td>-->
+<!--                                            <td th:text="${ur.getValue()}">Role</td>-->
+<!--                                        -->
+<!--                                            <td><a th:href="@{/user/{id}(id=${ur.getKey().getId()})}"-->
+<!--                                                class="btn btn-info btn-sm editBtn">Edit</a></td>-->
 
-                                            <td><a th:href="@{/user/{id}(id=${ur.getKey().getId()})}"
-                                                class="btn btn-info btn-sm editBtn">Edit</a></td>
-
-                                            <td><a th:href="@{/user/{id}(id=${ur.getKey().getId()})}"
-                                                   class="btn btn-danger btn-sm deleteBtn">Delete</a></td>
-                                        </tr>
-                                    </div>
+<!--                                            <td><a th:href="@{/user/{id}(id=${ur.getKey().getId()})}"-->
+<!--                                                   class="btn btn-danger btn-sm deleteBtn">Delete</a></td>-->
+<!--                                        </tr>-->
+<!--                                    </div>-->
                                     </tbody>
+
+
                                 </table>
                             </div>
                         </div>
@@ -167,26 +158,10 @@
                     <div class="border col-12 bg-white ml-1">
                         <table class="table table-striped">
                             <p></p>
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Age</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td th:text="${admin.getId()}">ID</td>
-                                <td th:text="${admin.getFirstName()}">First Name</td>
-                                <td th:text="${admin.getLastName()}">Last Name</td>
-                                <td th:text="${admin.getAge()}">Age</td>
-                                <td th:text="${admin.getEmail()}">Email</td>
-                                <td th:text="${role}">Role</td>
-                            <tr>
-                            </tbody>
+
+                            <thead id="head"></thead>
+                            <tbody id="data"></tbody>
+
                         </table>
                     </div>
                 </div><!--<инфо по юзеру из админа>-->
@@ -323,7 +298,10 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-<script src="../static/js/modal.js" th:src="@{js/modal.js}" type="text/javascript"></script>
+
+<script src="../static/js/admin.js" th:src="@{js/admin.js}"></script>
+<script src="../static/js/modal.js" th:src="@{js/modal.js}"></script>
+<script src="../static/js/user.js" th:src="@{js/user.js}"></script>
 </body>
 </html>
 

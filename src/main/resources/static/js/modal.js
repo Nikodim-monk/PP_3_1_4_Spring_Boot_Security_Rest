@@ -1,10 +1,9 @@
-/**
- *
- * */
 $(document).ready(function () {
-    $('.editBtn').on('click', function (event) {
+
+    $("body").on('click', '.editBtn', function (event) {
         event.preventDefault();
-        $.get($(this).attr('href'), function (user) {
+        let href = $(this).attr('href');
+        $.get(href, function (user) {
             $('#id1').val(user.id);
             $('#firstname1').val(user.firstName);
             $('#lastname1').val(user.lastName);
@@ -14,7 +13,7 @@ $(document).ready(function () {
         $('#editUser').modal();
     });
 
-    $('.deleteBtn').on('click', function (event) {
+    $('body').on('click', '.deleteBtn', function (event) {
         event.preventDefault();
         $.get($(this).attr('href'), function (user) {
             $('#id2').val(user.id);
@@ -25,5 +24,4 @@ $(document).ready(function () {
         });
         $('#deleteUser').modal();
     });
-
-});
+})

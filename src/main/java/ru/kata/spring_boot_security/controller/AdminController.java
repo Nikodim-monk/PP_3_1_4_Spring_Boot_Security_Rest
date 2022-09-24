@@ -7,6 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring_boot_security.entity.Role;
 import ru.kata.spring_boot_security.entity.User;
+import ru.kata.spring_boot_security.entity.UserExp;
 import ru.kata.spring_boot_security.service.UserService;
 
 import java.security.Principal;
@@ -23,7 +24,8 @@ public class AdminController {
 
     @GetMapping()
     public String printAllUsers(Principal principal, ModelMap model) {
-        model.addAttribute("id", service.getByEmail(principal.getName()).getId());
+//        model.addAttribute("id", service.getByEmail(principal.getName()).getId());
+        model.addAttribute("id", service.getByEmail("lr1975@yandex.ru").getId());
         return "admin_panel";
     }
 
@@ -33,14 +35,22 @@ public class AdminController {
         return service.getAllUsers();
     }
 
-
     @PostMapping("/new")
     @ResponseBody
-    public User createNewUser(@RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        service.addNewUser(user);
+    public UserExp createNewUser(@RequestBody UserExp user) {
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        service.addNewUser(user);
         return user;
     }
+
+//    @PostMapping("/new")
+//    public String createNewUser(@ModelAttribute("user") UserExp user,
+//                                @RequestParam(value = "role", required = false) String role) {
+////        user.setPassword(passwordEncoder.encode(user.getPassword()));
+////        user.setRoles(roles(role));
+////        service.addNewUser(user);
+//        return "redirect:/admin";
+//    }
 
     @PutMapping("/edit")
     @ResponseBody

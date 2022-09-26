@@ -40,7 +40,6 @@
         <div class="col-11 p-2 bg-dark text-white">
             <t class="font-weight-bold ml-2" id="email">user@mail.ru</t>
             <t class="font-weight-normal" id="role">with roles: USER</t>
-            <t class="d-none" th:text="${id}" id="id"></t>
         </div>
         <form class="col-1 p-2 bg-dark text-right" th:method="POST" th:action="@{/logout}">
             <button class="btn btn-dark text-white-50 btn-sm mr-1" type="submit">Logout</button>

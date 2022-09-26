@@ -3,14 +3,11 @@ package ru.kata.spring_boot_security.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring_boot_security.entity.Role;
 import ru.kata.spring_boot_security.entity.User;
-import ru.kata.spring_boot_security.entity.UserExp;
 import ru.kata.spring_boot_security.service.UserService;
 
-import java.security.Principal;
 import java.util.*;
 
 @Controller
@@ -23,9 +20,7 @@ public class AdminController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping()
-    public String printAllUsers(Principal principal, ModelMap model) {
-//        model.addAttribute("id", service.getByEmail(principal.getName()).getId());
-        model.addAttribute("id", service.getByEmail("lr1975@yandex.ru").getId());
+    public String printAllUsers() {
         return "admin_panel";
     }
 
@@ -37,24 +32,18 @@ public class AdminController {
 
     @PostMapping("/new")
     @ResponseBody
-    public UserExp createNewUser(@RequestBody UserExp user) {
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        service.addNewUser(user);
-        return user;
+    public List<User>  createNewUser(@ModelAttribute("user") User user,
+                                 @RequestParam(value = "role", required = false) String role) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(roles(role));
+        service.addNewUser(user);
+        return service.getAllUsers();
     }
-
-//    @PostMapping("/new")
-//    public String createNewUser(@ModelAttribute("user") UserExp user,
-//                                @RequestParam(value = "role", required = false) String role) {
-////        user.setPassword(passwordEncoder.encode(user.getPassword()));
-////        user.setRoles(roles(role));
-////        service.addNewUser(user);
-//        return "redirect:/admin";
-//    }
 
     @PutMapping("/edit")
     @ResponseBody
-    public User updateUser(@RequestBody User user) {
+    public List<User>  updateUser(@ModelAttribute("user") User user,
+                           @RequestParam(value = "role", required = false) String role) {
         User userNotUpdate = service.getUser(user.getId());
 
         userNotUpdate.setFirstName(user.getFirstName());
@@ -64,29 +53,18 @@ public class AdminController {
         if (!user.getPassword().equals("")) {
             userNotUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        userNotUpdate.setRoles(user.getRoles());
+        if (role != null) {
+            userNotUpdate.setRoles(roles(role));
+        }
         service.updateUser(userNotUpdate);
-        return service.getUser(user.getId());
+        return service.getAllUsers();
     }
 
     @DeleteMapping("/delete")
     @ResponseBody
-    public String deleteUser(@RequestBody User user) {
+    public List<User>  deleteUser(@ModelAttribute("user") User user) {
         service.userDelete(user.getId());
-        return "Юзер c id= " +user.getId()+" удален к едрене-Фене";
-    }
-
-    public static String roleSting(User elem) {
-        String rs = elem.getRoles().toString();
-        if (rs.contains("ROLE_ADMIN") && rs.contains("ROLE_USER")) {
-            return "ADMIN USER";
-        } else if (rs.contains("ROLE_ADMIN")) {
-            return "ADMIN";
-        } else if (rs.contains("ROLE_USER")) {
-            return "USER";
-        } else {
-            return "";
-        }
+        return service.getAllUsers();
     }
 
     public static Collection<Role> roles(String role){
@@ -101,4 +79,5 @@ public class AdminController {
         }
         return roles;
     }
+
 }

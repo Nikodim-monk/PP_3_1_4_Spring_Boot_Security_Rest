@@ -2,7 +2,6 @@ package ru.kata.spring_boot_security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +18,21 @@ public class UserController {
     private UserService service;
 
     @GetMapping()
-    public String printUser(Principal principal, ModelMap model) {
-        model.addAttribute("id", service.getByEmail(principal.getName()).getId());
-//        model.addAttribute("id", service.getByEmail("joh@mail.ru").getId());
+    public String printUser(){
         return "user_panel";
+    }
+
+    @GetMapping("/mL")
+    public String printMineLoginPage() {
+        return "mine_login";
+    }
+
+    @GetMapping("/principal")
+    @ResponseBody
+    public User userPrincipal(Principal principal) {
+//        return service.getByEmail("joh@mail.ru");
+        return service.getByEmail("lr1975@yandex.ru");
+//        return service.getByEmail(principal.getName());
     }
 
     @GetMapping("/{id}")
@@ -31,8 +41,4 @@ public class UserController {
         return service.getUser(id);
     }
 
-    @GetMapping("/mL")
-    public String printMineLoginPage() {
-        return "mine_login";
-    }
 }

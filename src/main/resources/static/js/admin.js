@@ -2,7 +2,8 @@
  *
  * */
 $(document).ready(function () {
-    document.getElementById("headAll").innerHTML = "<tr><th>ID</th><th>First Name</th><th>Last Name</th>" + "<th>Age</th><th>Email</th><th>Role</th><th>Edit</th><th>Delete</th></tr>"
+    document.getElementById("headAll").innerHTML = "<tr><th>ID</th><th>First Name</th><th>Last Name</th>" +
+        "<th>Age</th><th>Email</th><th>Role</th><th>Edit</th><th>Delete</th></tr>"
     const url = "/admin/all/"
     allUsersInTable(url)
 
@@ -15,30 +16,42 @@ $(document).ready(function () {
             age: formInfo[2].value,
             email: formInfo[3].value,
             password: formInfo[4].value,
-            roles: roles(formInfo[5].value)
+            roles: rolesCollection(formInfo[5].value)
         }
         await fetch('/admin/new/', {
-            method: 'POST', headers: {'Content-Type': 'application/json;charset=utf-8'}, body: JSON.stringify(user)
+            method: 'POST',
+            headers: {'Content-Type': 'application/json;charset=utf-8'},
+            body: JSON.stringify(user)
         });
         allUsersInTable(url)
         document.getElementById("nav-home-tab").click()
     })
 
-    document.querySelector('.formEdit').addEventListener('submit', (event) => {
+    document.querySelector('.formEdit').addEventListener('submit', async (event) => {
         event.preventDefault()
-
-        // код по подготовке данных
-        // и их отправка на сервер
-
+        let formInfo = $('.formEdit').serializeArray()
+        let user = {
+            id: formInfo[0].value,
+            firstName: formInfo[1].value,
+            lastName: formInfo[2].value,
+            age: formInfo[3].value,
+            email: formInfo[4].value,
+            password: formInfo[5].value,
+            roles: rolesCollection(formInfo[6].value)
+        }
+        await fetch('/admin/edit/', {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json;charset=utf-8'},
+            body: JSON.stringify(user)
+        });
         allUsersInTable(url)
         document.getElementById("eBC").click()
     })
 
-    document.querySelector('.formDelete').addEventListener('submit', (event) => {
+    document.querySelector('.formDelete').addEventListener('submit', async (event) => {
         event.preventDefault()
-
-        // код по подготовке данных
-        // и их отправка на сервер
+        let formInfo = $('.formDelete').serializeArray()
+        await fetch('/admin/delete/' + formInfo[0].value, {method: 'DELETE'});
         allUsersInTable(url)
         document.getElementById("dBC").click()
     })
@@ -69,7 +82,7 @@ function allUsersInTable(url) {
     })
 }
 
-function roles(role) {
+function rolesCollection(role) {
     if (role === "USER ADMIN") return [{"id": 1, role: "ROLE_USER"}, {"id": 2, role: "ROLE_ADMIN"}]
     if (role === "ADMIN") return [{"id": 2, role: "ROLE_ADMIN"}]
     if (role === "USER") return [{"id": 1, role: "ROLE_USER"}]

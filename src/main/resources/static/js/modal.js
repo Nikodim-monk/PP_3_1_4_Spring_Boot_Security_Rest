@@ -8,6 +8,7 @@ $(document).ready(function () {
             $('#lastname1').val(user.lastName);
             $('#age1').val(user.age);
             $('#email1').val(user.email);
+            rolesSelect(user.roles)
         });
         $('#editUser').modal();
     });
@@ -20,8 +21,15 @@ $(document).ready(function () {
             $('#lastname2').val(user.lastName);
             $('#age2').val(user.age);
             $('#email2').val(user.email);
+            rolesSelect(user.roles)
         });
         $('#deleteUser').modal();
     });
 
 })
+
+function rolesSelect(roles){
+    let i = 2;
+    if (roles.length === 1) (roles[0].role === "ROLE_USER") ? i = 1 : i = 0
+    document.getElementById("roles1").getElementsByTagName('option')[i].selected = 'selected'
+}

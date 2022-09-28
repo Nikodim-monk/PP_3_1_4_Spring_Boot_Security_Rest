@@ -30,9 +30,7 @@ public class UserController {
     @GetMapping("/principal")
     @ResponseBody
     public User userPrincipal(Principal principal) {
-//        return service.getByEmail("joh@mail.ru");
-        return service.getByEmail("lr1975@yandex.ru");
-//        return service.getByEmail(principal.getName());
+        return service.getByEmail(principal.getName());
     }
 
     @GetMapping("/{id}")

@@ -22,11 +22,6 @@ public class UserController {
         return "user_panel";
     }
 
-    @GetMapping("/mL")
-    public String printMineLoginPage() {
-        return "mine_login";
-    }
-
     @GetMapping("/principal")
     @ResponseBody
     public User userPrincipal(Principal principal) {

@@ -2,36 +2,45 @@
  *
  * */
 $(document).ready(function () {
-    document.getElementById("headAll").innerHTML = "<tr><th>ID</th><th>First Name</th><th>Last Name</th>" +
-        "<th>Age</th><th>Email</th><th>Role</th><th>Edit</th><th>Delete</th></tr>"
-    const url="http://localhost:8080/admin/all/"
+    document.getElementById("headAll").innerHTML = "<tr><th>ID</th><th>First Name</th><th>Last Name</th>" + "<th>Age</th><th>Email</th><th>Role</th><th>Edit</th><th>Delete</th></tr>"
+    const url = "/admin/all/"
     allUsersInTable(url)
 
-    document.querySelector('.formNew').addEventListener('submit', (event) => {
+    document.querySelector('.formNew').addEventListener('submit', async (event) => {
         event.preventDefault()
-        alert("Создание нового юзера в базе")
-        document.getElementById("nav-home-tab").click()
+        let formInfo = $('.formNew').serializeArray()
+        let user = {
+            firstName: formInfo[0].value,
+            lastName: formInfo[1].value,
+            age: formInfo[2].value,
+            email: formInfo[3].value,
+            password: formInfo[4].value,
+            roles: roles(formInfo[5].value)
+        }
+        await fetch('/admin/new/', {
+            method: 'POST', headers: {'Content-Type': 'application/json;charset=utf-8'}, body: JSON.stringify(user)
+        });
         allUsersInTable(url)
-        // код по подготовке данных
-        // и их отправка на сервер
+        document.getElementById("nav-home-tab").click()
     })
 
     document.querySelector('.formEdit').addEventListener('submit', (event) => {
         event.preventDefault()
-        alert("Изменение юзера в базе")
-        document.getElementById("eBC").click()
-        allUsersInTable(url)
+
         // код по подготовке данных
         // и их отправка на сервер
+
+        allUsersInTable(url)
+        document.getElementById("eBC").click()
     })
 
     document.querySelector('.formDelete').addEventListener('submit', (event) => {
         event.preventDefault()
-        alert("Удаление юзера из базы")
-        document.getElementById("dBC").click()
-        allUsersInTable(url)
+
         // код по подготовке данных
         // и их отправка на сервер
+        allUsersInTable(url)
+        document.getElementById("dBC").click()
     })
 })
 
@@ -58,4 +67,10 @@ function allUsersInTable(url) {
             document.getElementById("dataAll").innerHTML = temp
         })
     })
+}
+
+function roles(role) {
+    if (role === "USER ADMIN") return [{"id": 1, role: "ROLE_USER"}, {"id": 2, role: "ROLE_ADMIN"}]
+    if (role === "ADMIN") return [{"id": 2, role: "ROLE_ADMIN"}]
+    if (role === "USER") return [{"id": 1, role: "ROLE_USER"}]
 }

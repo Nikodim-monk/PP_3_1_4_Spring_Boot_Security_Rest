@@ -32,52 +32,31 @@ public class AdminController {
 
     @PostMapping("/new")
     @ResponseBody
-    public List<User>  createNewUser(@ModelAttribute("user") User user,
-                                 @RequestParam(value = "role", required = false) String role) {
+    public User createNewUser(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(roles(role));
         service.addNewUser(user);
-        return service.getAllUsers();
+        return user;
     }
 
     @PutMapping("/edit")
     @ResponseBody
-    public List<User>  updateUser(@ModelAttribute("user") User user,
-                           @RequestParam(value = "role", required = false) String role) {
+    public void updateUser(@RequestBody User user) {
         User userNotUpdate = service.getUser(user.getId());
-
         userNotUpdate.setFirstName(user.getFirstName());
         userNotUpdate.setLastName(user.getLastName());
         userNotUpdate.setAge(user.getAge());
         userNotUpdate.setEmail(user.getEmail());
+        userNotUpdate.setRoles(user.getRoles());
         if (!user.getPassword().equals("")) {
             userNotUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        if (role != null) {
-            userNotUpdate.setRoles(roles(role));
-        }
         service.updateUser(userNotUpdate);
-        return service.getAllUsers();
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     @ResponseBody
-    public List<User>  deleteUser(@ModelAttribute("user") User user) {
-        service.userDelete(user.getId());
-        return service.getAllUsers();
-    }
-
-    public static Collection<Role> roles(String role){
-        Collection<Role> roles = new ArrayList<>();
-        switch (role) {
-            case "USER" -> roles.add(new Role(1, "ROLE_USER"));
-            case "ADMIN" -> roles.add(new Role(2, "ROLE_ADMIN"));
-            case "ADMIN USER" -> {
-                roles.add(new Role(1, "ROLE_USER"));
-                roles.add(new Role(2, "ROLE_ADMIN"));
-            }
-        }
-        return roles;
+    public void deleteUser(@PathVariable long id) {
+        service.userDelete(id);
     }
 
 }

@@ -4,8 +4,7 @@
 $(document).ready(function () {
     document.getElementById("head").innerHTML =
         "<tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Age</th><th>Email</th><th>Role</th>"
-    const url = "http://localhost:8080/user/principal"
-    fetch(url).then(rez => {
+    fetch("/user/principal").then(rez => {
         rez.json().then(data => {
             let role = "USER ADMIN";
             if (data.roles.length === 1) (data.roles[0].role === "ROLE_USER") ? role = "USER" : role = "ADMIN"

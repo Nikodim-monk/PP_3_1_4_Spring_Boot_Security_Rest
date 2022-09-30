@@ -1,7 +1,6 @@
 package ru.kata.spring_boot_security.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring_boot_security.entity.User;
@@ -10,13 +9,11 @@ import ru.kata.spring_boot_security.service.UserService;
 import java.util.*;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private UserService service;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserService service;
 
     @GetMapping()
     public String printAllUsers() {
@@ -32,28 +29,18 @@ public class AdminController {
     @PostMapping("/new")
     @ResponseBody
     public void createNewUser(@RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         service.addNewUser(user);
     }
 
     @PutMapping("/edit")
     @ResponseBody
     public void updateUser(@RequestBody User user) {
-        User userNotUpdate = service.getUser(user.getId());
-        userNotUpdate.setFirstName(user.getFirstName());
-        userNotUpdate.setLastName(user.getLastName());
-        userNotUpdate.setAge(user.getAge());
-        userNotUpdate.setEmail(user.getEmail());
-        userNotUpdate.setRoles(user.getRoles());
-        if (!user.getPassword().equals("")) {
-            userNotUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-        service.updateUser(userNotUpdate);
+        service.updateUser(user);
     }
 
     @DeleteMapping("/delete/{id}")
     @ResponseBody
     public void deleteUser(@PathVariable long id) {
-        service.userDelete(id);
+        service.deleteUser(id);
     }
 }

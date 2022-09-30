@@ -83,7 +83,7 @@ function allUsersInTable(url) {
 }
 
 function rolesCollection(role) {
-    if (role === "USER ADMIN") return [{"id": 1, role: "ROLE_USER"}, {"id": 2, role: "ROLE_ADMIN"}]
+    if (role === "ADMIN USER") return [{"id": 1, role: "ROLE_USER"}, {"id": 2, role: "ROLE_ADMIN"}]
     if (role === "ADMIN") return [{"id": 2, role: "ROLE_ADMIN"}]
     if (role === "USER") return [{"id": 1, role: "ROLE_USER"}]
 }

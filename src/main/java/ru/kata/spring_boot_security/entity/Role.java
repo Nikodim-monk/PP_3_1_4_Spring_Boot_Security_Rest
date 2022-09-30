@@ -1,11 +1,16 @@
 package ru.kata.spring_boot_security.entity;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "roles")
 public class Role {
     @Id
@@ -13,13 +18,17 @@ public class Role {
     private long id;
     private String role;
 
-    public Role(long id, String role) {
-        this.id = id;
-        this.role = role;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role1 = (Role) o;
+        return id == role1.id && role.equals(role1.role);
     }
 
-    public Role() {
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, role);
     }
 }
 

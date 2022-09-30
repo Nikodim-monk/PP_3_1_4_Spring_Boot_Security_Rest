@@ -1,8 +1,7 @@
 $(document).ready(function () {
     $("body").on('click', '.editBtn', function (event) {
         event.preventDefault ? event.preventDefault() : (event.returnValue = false);
-        let href = $(this).attr('href');
-        $.get(href, function (user) {
+        $.get($(this).attr('href'), function (user) {
             $('#id1').val(user.id);
             $('#firstname1').val(user.firstName);
             $('#lastname1').val(user.lastName);

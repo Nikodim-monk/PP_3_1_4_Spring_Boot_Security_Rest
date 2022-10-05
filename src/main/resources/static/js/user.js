@@ -6,7 +6,7 @@ $(document).ready(function () {
         "<tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Age</th><th>Email</th><th>Role</th>"
     fetch("/user/principal").then(rez => {
         rez.json().then(data => {
-            let role = "USER ADMIN";
+            let role = "ADMIN USER";
             if (data.roles.length === 1) (data.roles[0].role === "ROLE_USER") ? role = "USER" : role = "ADMIN"
 
             let temp = "<tr><td>" + data.id + "</td>"

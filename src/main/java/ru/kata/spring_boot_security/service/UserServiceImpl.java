@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring_boot_security.entity.Role;
 import ru.kata.spring_boot_security.entity.User;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements  UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.NEVER)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = getByEmail(email);
         if (user == null) {
@@ -44,20 +45,22 @@ public class UserServiceImpl implements  UserService {
     public User getByEmail(String email) {
         return repository.findByEmail(email);
     }
-
+    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         return repository.findAll();
     }
-
+    @Transactional
     public void addNewUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        repository.save(user);
+        if (getByEmail(user.getEmail()) == null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            repository.save(user);
+        }
     }
-
+    @Transactional(readOnly = true)
     public User getUser(long id) {
         return repository.findById(id).orElse(null);
     }
-
+    @Transactional
     public void updateUser(User user) {
         User userNotUpdate = getUser(user.getId());
         userNotUpdate.setFirstName(user.getFirstName());
@@ -70,7 +73,7 @@ public class UserServiceImpl implements  UserService {
         }
         repository.saveAndFlush(userNotUpdate);
     }
-
+    @Transactional
     public void deleteUser(long id) {
         repository.deleteById(id);
     }

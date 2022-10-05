@@ -62,7 +62,7 @@ function allUsersInTable(url) {
         rez.json().then(data => {
             let temp = ""
             data.forEach((str) => {
-                let role = "USER ADMIN";
+                let role = "ADMIN USER";
                 if (str.roles.length === 1) (str.roles[0].role === "ROLE_USER") ? role = "USER" : role = "ADMIN"
 
                 let btnEdit = "<a href=\"user/" + str.id + "\" class='btn btn-info btn-sm editBtn'>Edit</a>"

@@ -16,14 +16,14 @@ public class InitUser {
 
     public void createDefaultUsersInBase() {
         service.addNewUser(new User(
-                "User", "Userov", 100, "user@mail.ru", "user",roles("USER")));
+                "User", "Userov", 80, "user@mail.ru", "user",roles("USER")));
         service.addNewUser(new User(
-                "Admin", "Adminov", 100, "admin@mail.ru", "admin", roles("ADMIN")));
+                "Admin", "Adminov", 90, "admin@mail.ru", "admin", roles("ADMIN")));
         service.addNewUser(new User(
                 "AdminUser", "AdminUserov", 100, "adminUser@mail.ru", "admin",
                 roles("ADMIN USER")));
     }
-    public static Set<Role> roles(String role) {
+    private Set<Role> roles(String role) {
         Set<Role> roles = new HashSet<>();
         switch (role) {
             case "USER" -> roles.add(new Role(1, "ROLE_USER"));

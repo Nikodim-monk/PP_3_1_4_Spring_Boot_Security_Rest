@@ -11,7 +11,7 @@ public class LoginController {
     private final InitUser initUser;
     @GetMapping("/login")
     public String printMineLoginPage() {
-        initUser.createDefaultUsersInBase();
+        initUser.createDefaultUsersAndRolesInBase();
         return "mine_login";
     }
 }

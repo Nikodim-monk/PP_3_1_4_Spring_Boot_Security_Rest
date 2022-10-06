@@ -18,6 +18,10 @@ public class Role {
     private long id;
     private String role;
 
+    public Role(String role) {
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

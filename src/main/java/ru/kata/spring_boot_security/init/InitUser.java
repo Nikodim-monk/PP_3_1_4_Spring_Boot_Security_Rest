@@ -20,12 +20,9 @@ public class InitUser {
         roleService.addNewRole(new Role("ROLE_USER"));
         roleService.addNewRole(new Role("ROLE_ADMIN"));
         userService.addNewUser(new User(
-                "User", "Userov", 80, "user@mail.ru", "user",roles("USER")));
+                "user", "user", 80, "user@mail.ru", "user",roles("USER")));
         userService.addNewUser(new User(
-                "Admin", "Adminov", 90, "admin@mail.ru", "admin", roles("ADMIN")));
-        userService.addNewUser(new User(
-                "AdminUser", "AdminUserov", 100, "adminUser@mail.ru", "admin",
-                roles("ADMIN USER")));
+                "admin", "admin", 90, "admin@mail.ru", "admin", roles("ADMIN")));
     }
 
     private Set<Role> roles(String role) {

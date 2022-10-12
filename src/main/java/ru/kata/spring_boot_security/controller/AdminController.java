@@ -1,6 +1,8 @@
 package ru.kata.spring_boot_security.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring_boot_security.entity.User;
@@ -27,20 +29,20 @@ public class AdminController {
     }
 
     @PostMapping("/new")
-    @ResponseBody
-    public void createNewUser(@RequestBody User user) {
+    public ResponseEntity<HttpStatus> createNewUser(@RequestBody User user) {
         service.addNewUser(user);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PutMapping("/edit")
-    @ResponseBody
-    public void updateUser(@RequestBody User user) {
+    public ResponseEntity<HttpStatus> updateUser(@RequestBody User user) {
         service.updateUser(user);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    @ResponseBody
-    public void deleteUser(@PathVariable long id) {
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable long id) {
         service.deleteUser(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

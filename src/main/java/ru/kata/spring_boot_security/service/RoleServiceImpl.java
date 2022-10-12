@@ -6,20 +6,39 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring_boot_security.entity.Role;
 import ru.kata.spring_boot_security.repository.RoleRepository;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
     private final RoleRepository repository;
 
     @Override
+    @Transactional(readOnly = true)
     public Role getByRole(String role) {
         return repository.findByRole(role);
     }
+
+    @Override
     @Transactional
     public void addNewRole(Role role) {
-        if(getByRole(role.getRole())==null) {
+        if (getByRole(role.getRole()) == null) {
             repository.save(role);
         }
+    }
 
+    @Override
+    public Set<Role> getSetRoles(String role) {
+        Set<Role> roles = new HashSet<>();
+        switch (role) {
+            case "USER" -> roles.add(new Role(1, "ROLE_USER"));
+            case "ADMIN" -> roles.add(new Role(2, "ROLE_ADMIN"));
+            case "ADMIN USER" -> {
+                roles.add(new Role(1, "ROLE_USER"));
+                roles.add(new Role(2, "ROLE_ADMIN"));
+            }
+        }
+        return roles;
     }
 }

@@ -20,15 +20,15 @@ $(document).ready(function () {
             $('#lastname2').val(user.lastName);
             $('#age2').val(user.age);
             $('#email2').val(user.email);
-            rolesSelect(user.roles)
         });
         $('#deleteUser').modal();
     });
-
 })
 
-function rolesSelect(roles){
+function rolesSelect(roles) {
+    const elemSelect = document.getElementById("roles1")
+    for (let i = 0; i <= 2; i++) elemSelect.getElementsByTagName('option')[i].selected = false
     let i = 2;
     if (roles.length === 1) (roles[0].role === "ROLE_USER") ? i = 1 : i = 0
-    document.getElementById("roles1").getElementsByTagName('option')[i].selected = 'selected'
+    elemSelect.getElementsByTagName('option')[i].selected = true
 }

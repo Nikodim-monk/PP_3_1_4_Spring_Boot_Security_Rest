@@ -1,6 +1,7 @@
 package ru.kata.spring_boot_security.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,19 +19,19 @@ public class UserController {
     private final UserService service;
 
     @GetMapping()
-    public String printUser(){
+    public String printUser() {
         return "user_panel";
     }
 
     @GetMapping("/principal")
     @ResponseBody
-    public User userPrincipal(Principal principal) {
+    public  User getUserPrincipal(Principal principal) {
         return service.getByEmail(principal.getName());
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public User userFor(@PathVariable("id") long id) {
+    public User getUserFor(@PathVariable("id") long id) {
         return service.getUser(id);
     }
 

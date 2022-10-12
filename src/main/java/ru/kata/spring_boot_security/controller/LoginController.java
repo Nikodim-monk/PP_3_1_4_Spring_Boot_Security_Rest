@@ -9,6 +9,7 @@ import ru.kata.spring_boot_security.init.InitUser;
 @RequiredArgsConstructor
 public class LoginController {
     private final InitUser initUser;
+
     @GetMapping("/login")
     public String printMineLoginPage() {
         initUser.createDefaultUsersAndRolesInBase();

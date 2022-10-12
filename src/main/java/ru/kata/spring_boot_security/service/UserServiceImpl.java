@@ -18,15 +18,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements  UserService {
+public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository repository,@Lazy PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository repository, @Lazy PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
     @Transactional(propagation = Propagation.NEVER)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = getByEmail(email);
@@ -42,13 +43,18 @@ public class UserServiceImpl implements  UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User getByEmail(String email) {
         return repository.findByEmail(email);
     }
+
+    @Override
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         return repository.findAll();
     }
+
+    @Override
     @Transactional
     public void addNewUser(User user) {
         if (getByEmail(user.getEmail()) == null) {
@@ -56,10 +62,14 @@ public class UserServiceImpl implements  UserService {
             repository.save(user);
         }
     }
+
+    @Override
     @Transactional(readOnly = true)
     public User getUser(long id) {
         return repository.findById(id).orElse(null);
     }
+
+    @Override
     @Transactional
     public void updateUser(User user) {
         User userNotUpdate = getUser(user.getId());
@@ -73,6 +83,8 @@ public class UserServiceImpl implements  UserService {
         }
         repository.saveAndFlush(userNotUpdate);
     }
+
+    @Override
     @Transactional
     public void deleteUser(long id) {
         repository.deleteById(id);

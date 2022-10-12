@@ -27,8 +27,8 @@ $(document).ready(function () {
 
 function rolesSelect(roles) {
     const elemSelect = document.getElementById("roles1")
-    for (let i = 0; i <= 2; i++) elemSelect.getElementsByTagName('option')[i].selected = false
-    let i = 2;
+    elemSelect.getElementsByTagName('option')[0].selected = false
+    elemSelect.getElementsByTagName('option')[1].selected = false
     if (roles.length === 1) (roles[0].role === "ROLE_USER") ? i = 1 : i = 0
     elemSelect.getElementsByTagName('option')[i].selected = true
 }

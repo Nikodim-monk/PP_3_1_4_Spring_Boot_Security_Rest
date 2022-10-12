@@ -31,18 +31,18 @@ public class AdminController {
     @PostMapping("/new")
     public ResponseEntity<HttpStatus> createNewUser(@RequestBody User user) {
         service.addNewUser(user);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/edit")
     public ResponseEntity<HttpStatus> updateUser(@RequestBody User user) {
         service.updateUser(user);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable long id) {
         service.deleteUser(id);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -16,7 +16,7 @@ $(document).ready(function () {
             age: formInfo[2].value,
             email: formInfo[3].value,
             password: formInfo[4].value,
-            roles: rolesCollection(formInfo[5].value)
+            roles: rolesCollection(formInfo, 5)
         }
         await fetch('/admin/new/', {
             method: 'POST',
@@ -37,7 +37,7 @@ $(document).ready(function () {
             age: formInfo[3].value,
             email: formInfo[4].value,
             password: formInfo[5].value,
-            roles: rolesCollection(formInfo[6].value)
+            roles: rolesCollection(formInfo, 6)
         }
         await fetch('/admin/edit/', {
             method: 'PUT',
@@ -82,8 +82,11 @@ function allUsersInTable(url) {
     })
 }
 
-function rolesCollection(role) {
-    if (role === "ADMIN USER") return [{"id": 1, role: "ROLE_USER"}, {"id": 2, role: "ROLE_ADMIN"}]
-    if (role === "ADMIN") return [{"id": 2, role: "ROLE_ADMIN"}]
-    if (role === "USER") return [{"id": 1, role: "ROLE_USER"}]
+function rolesCollection(roleArray, index) {
+    if ((roleArray.length - 1) > index) {
+        return [{"id": 1, role: "ROLE_USER"}, {"id": 2, role: "ROLE_ADMIN"}]
+    } else {
+        if (roleArray[index].value === "ADMIN") return [{"id": 2, role: "ROLE_ADMIN"}]
+        if (roleArray[index].value === "USER") return [{"id": 1, role: "ROLE_USER"}]
+    }
 }

@@ -51,7 +51,7 @@ $(document).ready(function () {
     document.querySelector('.formDelete').addEventListener('submit', async (event) => {
         event.preventDefault()
         let formInfo = $('.formDelete').serializeArray()
-        await fetch('/admin/delete/' + formInfo[0].value, {method: 'DELETE'});
+        await fetch('/admin/delete/' + formInfo[0].value + "/10", {method: 'DELETE'});
         allUsersInTable(url)
         document.getElementById("dBC").click()
     })

@@ -40,8 +40,10 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable long id) {
+    @DeleteMapping("/delete/{id}/{questionId}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable ("id") long id, @PathVariable ("questionId") long questionId) {
+        long aaa=id;
+        long bbb=questionId;
 //        service.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
